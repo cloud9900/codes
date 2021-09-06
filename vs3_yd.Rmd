@@ -1,0 +1,424 @@
+
+---
+title: '**Verinin Standartlaştırılması Üzerine Vaka Çalışmaları: Case Studies on Data
+  Standardization**'
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    highlight: pygments
+    code_folding: show
+---
+
+
+
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+  font-weight:bold
+}
+
+.title {
+  color: grey;
+  font-size: 18px;
+  font-family: arial;
+}
+
+.button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #0e76a8;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+
+.button:hover, a:hover {
+  opacity: 0.7;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <img src="1.1.jpg" alt="John" style="width:100%">
+  <h1>Tevfik Bulut</h1>
+  <p class="title">Data Scientist</p>
+  <p><a href="https://tevfikbulut.com/" target="_blank">Web Site</a></p>
+  <p><a href="https://www.linkedin.com/in/tevfik-bulut-7932831aa/" target="_blank">Linkedin</a></p>
+  <p><a href="https://rpubs.com/tevfik1461/" target="_blank">RPubs</a></p>
+  <a href="mailto:buluttevfik@gmail.com" class="button">Contact</a>
+</div>
+
+</body>
+</html>
+
+## **Bölüm 1** {.tabset .tabset-fade .tabset-pills}
+
+### **1.1. Intro**
+
+The main focus of this study is the practical handling of some standardization methods that have found application in the literature.The standardization methods commonly used in the literature are as follows:
+
+<ol>
+<li> Z-Score Standardization</li>
+
+<li> Standardization with a Distribution Range of 1</li>
+
+<li> Standardization with a Distribution Range (-1;+1)</li>
+
+<li> Standardization with a Distribution Range (0;+1)</li>
+
+<li> Standardization with Maximum Value of 1</li>
+
+<li> Standardization to Arithmetic Mean 1</li>
+
+<li> Standardization with a Standard Deviation of 1</li>
+</ol>
+
+
+
+
+
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fjalla+One|Libre+Baskerville">
+<style>
+body {
+  font-family: 'Arial', serif;
+  font-size: 16px;  
+}
+
+div{
+  line-height: 1.6;
+  text-align: justify;
+}
+
+h1.title {
+  font-size: 30px;
+  color: White;
+  font-family: 'Arial', serif;
+  background-color:#0e76a8;
+}
+
+h2{
+  font-size: 25px;
+  color: White;
+  font-family: 'Arial', serif;
+  background-color:#0e76a8;
+}
+
+h3 {
+  font-family: 'Arial', serif;
+  font-size: 20px;
+  background-color:#0e76a8;
+  color: White;
+}
+</style>
+</head>
+<body>
+
+
+
+<style>
+.table-hover > tbody > tr:hover { 
+  background-color: #FF0000;
+}
+</style>
+
+### **1.2. Giriş**
+
+Veri bilimciler ve veri mühendisleri çok değişkenli istatistiksel analizler üzerinde yoğun bir şekilde şekilde çalışmaktadır. Ancak bazı durumlarda seçilen analiz yönteminin ilk varsayımlarının yerine getirilmesi gerekmektedir. Bu varsayımlardan ve gerekliliklerden biri de veri setinin standartlaştırılmasıdır. Örnek vermek gerekirse küme analizleri başta olmak üzere yapay sinir ağları alanlarında da standartlaştırmanın kendine uygulama alanı bulduğu görülmektedir. Peki standartlaştırma neden gereklidir? Verinin standartize edilmek istenmesinin temel sebebi verinin aynı ölçü birimine indirgenmesidir. Ancak bu indirgeme işlemi verinin dönüştürülmesi veya dönüşümü ile özellikle karıştırılmaması gerekir. Veri standartize edildiğinde yani aynı ölçü birimine indirgendiğinde dağılım şekli değişmemektedir. Değişen tek şey burada ölçü birimidir. Verinin dönüştürülmesi işleminde ise istastiksel dağılımın şekli de değişir. Bu işlem ise genelde verinin dağılım şeklini analizi yapılacak yöntemin benimsediği dağılım şekline dönüştürmek için yapılır. Verinin dağılım şekline göre farklı dönüşüm metodları uygulanabilmektedir. Örneğin pozitif çarpıksa log dönüşümü. Bu çalışma kapsamında verinin dönüşümü ele alınmayacaktır. Dolayısıyla verinin dönüşümü konusuna ayrıntılı bir giriş yapılmamıştır. Bu çalışmanın ana odağı, literatürde kendine uygulama alanı bulan bazı standartlaştırma yöntemlerinin uygulamalı örnek üzerinden ele alınmasıdır. Litaratürde ağırlıklı olarak kullanılan standartlaştırma yöntemleri şöyledir:
+
+<ol>
+<li>Z Skor Standartlaştırma</li>
+
+<li> Dağılım Aralığı 1 Olacak şekilde Standartlaştırma</li>
+
+<li>Dağılım Aralığı (-1;+1) Olacak şekilde Standartlaştırma</li>
+
+<li> Dağılım Aralığı (0;+1) Olacak şekilde Standartlaştırma</li>
+
+<li> En Büyük Değer 1 Olacak şekilde Standartlaştırma</li>
+
+<li> Aritmetik Ortalama 1 Olacak Şekilde Standartlaştırma</li>
+
+<li> Standart Sapma 1 Olacak Şekilde Standartlaştırma</li>
+</ol>
+
+
+```{css, echo=FALSE}
+.watch-out {
+  background-color: #f0f8ff;
+  border: 3px solid #0e76a8;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 10px 10px 20px grey
+}
+```
+
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(class.source = "watch-out")
+
+```
+
+### **1.3.Yüklenen kütüphaneler**
+
+```{r message=FALSE, warning=FALSE, fig.align='center'}
+
+kütüphane<-c("dplyr","tibble","tidyr","DT","ggplot2","vtable","readr","readxl","ggpubr","formattable", "ggstance","scales", "rmarkdown", "knitr","writexl", "kableExtra")
+yükle<-sapply(kütüphane, require, character.only = TRUE, warn.conflicts = FALSE)
+
+#Kütüphane yüklenme durumunu gösteren tablo
+ 
+tablo=suppressWarnings(yükle, classes = "warning")
+   
+isim=names(tablo)
+   
+deger=as_tibble(tablo)
+   
+data.frame(Sıra=1:length(isim), Kütüphane=isim, Durumu=deger$value) %>% mutate(Durumu=if_else(Durumu==TRUE, "Yüklendi", "Paket Kurulumu Gerekli")) %>% kbl() %>%  
+kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+### **1.4.Tesadüfi sentetik (hipotetik) veri üretme**
+
+**Bu kısımda tek değişkenli ve 1000 (N) gözlemden oluşan bir veri seti, basit tekrarlı örneklem yöntemi kullanılarak üretilecektir. Üretilen veri setinde beden kitle endeksi (BKİ) alt ve üst sınır değerleri (alt sınır:18,5, üst sınır:40) modellenmiştir.** 
+
+```{r}
+set.seed(61)#aynı sonuçları almak için
+bki=seq(18.499, 40.001, 0.001)
+N=sample(bki, 1000, replace=TRUE)
+veri=tibble(x=N)
+veri %>% head(10) %>% kbl() %>%  
+kable_styling(bootstrap_options = c("striped", "hover")) #ilk 10 gözlem
+```
+
+### **1.5.Tanımlayıcı istatistikler**
+
+```{r}
+
+st(veri,title="Tanımlayıcı İstatistikler")
+
+```
+
+
+## **Bölüm 2** {.tabset .tabset-fade .tabset-pills}
+
+### **2.1.Z skor standartlaştırma**
+
+**Z skor standartlaştırma, veri setindeki gözlem değerlerinin ortalaması 0, standart sapması 1 olan yeni veri setine dönüştürülmesidir.Z skoru aşağıdaki eşitlik yardımıyla hesaplanmaktadır.**
+
+$$\frac{X_{i}-X_{ort}}{X_{sd}}$$
+
+```{r}
+tibble(bki=veri$x, bki_zskor=scale(veri$x)) %>% 
+head(10) %>% 
+mutate_if(is.numeric, round, 2) %>% 
+kbl() %>%  
+kable_styling(bootstrap_options = c("striped", "hover")) #ilk 10 kayıt
+```
+
+
+### **2.1.1.Z skor standartlaştırma: Histogramların karşılaştırılması**
+
+**Burada standartize edilen veri seti ile standartize edilmemiş veri setinin dağılımı histogramla karşılaştırılmıştır. Görüleceği üzere dağılımın şekli değişmemiştir.**
+
+```{r message=FALSE, warning=FALSE, fig.align='center'}
+df=tibble(bki=veri$x, bki_zskor=scale(veri$x))
+v1<-ggplot(df, aes(x=bki)) +
+  geom_histogram(fill="blue")+
+  ggtitle("Orjinal Veri Seti")
+v2<-ggplot(df, aes(x=bki_zskor)) +
+  geom_histogram(fill="red")+
+  ggtitle("Standartlaştırılmış Veri Seti")
+ggarrange(v1,v2, ncol = 1)
+
+```
+
+### **2.2.Dağılım aralığı 1 olacak şekilde standartlaştırma**
+
+**Her bir değer dağılım aralığına bölünerek hesaplanır. Dağılım aralığı= Mak-Min.**
+
+```{r}
+tibble(d1=veri$x/(max(veri$x)-min(veri$x))) %>% 
+head(10) %>% 
+mutate_if(is.numeric, round, 2) %>% 
+kbl() %>%  
+kable_styling(bootstrap_options = c("striped", "hover")) #ilk 10 gözlem
+```
+
+
+### **2.3.Dağılım aralığı (-1;+1) olacak şekilde standartlaştırma**
+
+**Aşağıdaki eşitlik yardımı ile hesaplanır.**
+
+
+$$DA=\frac{(X_i-\frac{X_{max}+X_{min}}{2})}{(\frac{X_{max}-X_{min}}{2})}$$
+
+
+```{r}
+m=veri$x-(max(veri$x)+min(veri$x))/2 # eşitliğin payı
+x=(max(veri$x)-min(veri$x))/2 # eşitliğin paydası
+
+tibble(d1_eksi1=m/x) %>% 
+head(10) %>% 
+mutate_if(is.numeric, round, 2) %>% 
+kbl() %>%  
+kable_styling(bootstrap_options = c("striped", "hover")) #ilk 10 gözlem
+```
+
+### **2.4.En büyük değer 1 olacak şekilde standartlaştırma**
+
+**Aşağıdaki eşitlik yardımı ile hesaplanır.**
+
+$$\frac{X_i}{X_{max}}$$
+
+```{r}
+tibble(mak1=veri$x/max(veri$x)) %>% 
+head(10) %>% 
+mutate_if(is.numeric, round, 2) %>% 
+kbl() %>%  
+kable_styling(bootstrap_options = c("striped", "hover")) #ilk 10 gözlem
+```
+
+
+### **2.5.Aritmetik ortalama 1 olacak şekilde standartlaştırma**
+
+**Aşağıdaki eşitlik yardımı ile hesaplanır.**
+
+$$\frac{X_i}{X_{ort}}$$
+
+```{r}
+tibble(a1=veri$x/mean(veri$x))%>% 
+head(10) %>% 
+mutate_if(is.numeric, round, 2) %>% 
+kbl() %>%  
+kable_styling(bootstrap_options = c("striped", "hover")) #ilk 10 gözlem
+```
+
+
+### **2.6.Dağılım aralığı (0;+1) olacak şekilde standartlaştırma**
+
+**Aşağıdaki eşitlik yardımı ile hesaplanır.Dağılım aralığı (DA)= Mak-Min.**
+
+
+$$DA=\frac{X_i}{X_{max}-X_{min}}$$
+
+
+```{r}
+tibble(dsifir_bir=(veri$x-min(veri$x))/(max(veri$x)-min(veri$x))) %>% 
+head(10) %>% 
+mutate_if(is.numeric, round, 2) %>% 
+kbl() %>%  
+kable_styling(bootstrap_options = c("striped", "hover")) #ilk 10 gözlem
+```
+
+
+### **2.7.Standart sapması 1 olacak şekilde standartlaştırma**
+
+**Bu standartlaştırma türü aşağıdaki eşitlik yardımı ile hesaplanır. **
+
+$$\frac{X_i}{X_{sd}}$$
+
+```{r}
+tibble(sd_1=veri$x/sd(veri$x))%>% 
+head(10) %>% 
+mutate_if(is.numeric, round, 2) %>% 
+kbl() %>%  
+kable_styling(bootstrap_options = c("striped", "hover")) #ilk 10 gözlem
+```
+
+## **Bölüm 3** {.tabset .tabset-fade .tabset-pills}
+
+### **3.1.Yönteme göre standartlaştırılmış değerler ve orjinal veri seti**
+
+```{r}
+tum=tibble(bki=N) %>% mutate(zskor=scale(veri$x),d1=veri$x/(max(veri$x)-min(veri$x)),d_eksi1_arti1=m/x,mak1=veri$x/max(veri$x), ort1=veri$x/mean(veri$x),dsifir_bir=(veri$x-min(veri$x))/(max(veri$x)-min(veri$x)),sd_1=veri$x/sd(veri$x)) %>% mutate_if(is.numeric, round,2)
+
+#ilk 10 gözlem
+
+tum %>% 
+head(10) %>% 
+mutate_if(is.numeric, round, 2) %>% 
+kbl() %>%  
+kable_styling(bootstrap_options = c("striped", "hover")) #ilk 10 gözlem
+
+```
+
+
+### **3.2.Sonuçların indirilmesi**
+
+```{r}
+datatable(tum,  class = 'cell-border stripe', filter = 'top', extensions = 'Buttons', options = list(
+    dom = 'Bfrtip',
+    buttons = c('copy', 'csv', 'excel', 'pdf', 'print'),searching = FALSE, pageLength = 10
+  ))
+```
+
+
+### **3.3.Sonuç**
+
+**Özetle, yapılan uygulamalı çalışmayla veri biliminde önemli bir yere sahip verinin standartlaştırılması konusu özelinde farkındalık oluşturulması amaçlanmıştır.**
+
+Faydalı olması ve farkındalık oluşturması dileğiyle.
+
+## **Bölüm 4** {.tabset .tabset-fade .tabset-pills}
+
+### **Yararlanılan Kaynaklar**
+
+* Beden Kitle Endeksi Referans Değerleri. https://www.acibadem.com.tr/ilgi-alani/vucut-kitle-indeksi-hesaplama/#genel-tanitim
+
+* RStudio Cloud: <https://login.rstudio.cloud/>
+
+* The R Project for Statistical Computing. <https://www.r-project.org/>
+
+* Alpar, R. (2017). Uygulamalı Çok Değişkenli İstatistiksel Yöntemler. 5. Baskı. Detay Yayıncılık.
+
+* Nick Huntington-Klein (2021). vtable: Variable Table for Variable Documentation. R package version 1.3.3.
+  https://CRAN.R-project.org/package=vtable
+  
+* Kun Ren and Kenton Russell (2021). formattable: Create 'Formattable' Data Structures. R package version 0.2.1.
+  https://CRAN.R-project.org/package=formattable
+  
+* Hao Zhu (2021). kableExtra: Construct Complex Table with 'kable' and Pipe Syntax. R package version 1.3.4.
+  https://CRAN.R-project.org/package=kableExtra
+
+
+<html>
+<head>
+<style>
+
+footer {
+  text-align: center;
+  padding: 2px;
+  background-color: white;
+  color: white;
+}
+</style>
+</head>
+<body>
+
+
+<footer>
+  <p><div style="text-align:center; font-size: 16px; font-family: sans-serif"><img src="https://www.webfreecounter.com/hit.php?id=goqonk&nd=6&style=71" border="0" alt="web counter"></a><br / ><b><small><font color = "black">Görüntülenme Sayısı</font></a></small><b></div><br>
+
+</footer>
+
+</body>
+</html>
+
+
+
+
